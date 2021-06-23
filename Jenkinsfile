@@ -1,46 +1,32 @@
 pipeline {
   environment {
-    registry = "azzu9394/springboot-with-docker"
+    registry = "azzu9394/jhooq-docker-demo:jhooq-docker-demo"
     registryCredential = 'docker_credentials'
     dockerImage = ''
   }
   agent any
   stages {
-    stage('Compile') {
+    stage('Compile','Gradle Build') {
       steps {
         git 'https://github.com/Azarazzu/springboot-with-docker.git'
-        script{
-                def gradelHome = tool name: 'GRADLE_HOME', type: 'gradle'
-                bat "${gradleHome}/bin/gradle bootrun"
+         powershell 'gradlew build'        
         }
       }
     }
-    stage('Building Docker Image') {
-      steps{
-        script {
-          dockerImage = docker.build registry + ":$BUILD_NUMBER"
-        }
-      }
+    stage("Docker build"){
+        powershell 'docker version'
+        powershell 'docker build -t jhooq-docker-demo .'
+        powershell 'docker image list'
+        powershell 'docker tag jhooq-docker-demo azzu9394/jhooq-docker-demo:jhooq-docker-demo'
+    } 
+    stage("Push Image to Docker Hub"){
+        powershell 'docker push azzu9394/jhooq-docker-demo:jhooq-docker-demo'
     }
-    stage('Push Image To Docker Hub') {
-      steps{
-        script {
-          /* Finally, we'll push the image with two tags:
-                   * First, the incremental build number from Jenkins
-                   * Second, the 'latest' tag.
-                   * Pushing multiple tags is cheap, as all the layers are reused. */
-          docker.withRegistry('https://hub.docker.com/', 'docker_credentials') {
-              dockerImage.push("${env.BUILD_NUMBER}")
-              dockerImage.push("latest")
-          }
-        }
-      }
-    }
+
     stage('Deploy to Kubernetes'){
         steps{
-              withKubeConfig([credentialsId: 'mykubeconfig']) {
-          powershell '''SET PATH=C:\\Program Files (x86)\\Google\\Cloud SDK\\google-cloud-sdk\\bin
-kubectl apply -f deployment.yml'''
+              withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: '']) {
+            powershell 'kubectl apply -f k8s-spring-boot-deployment.yml'
        }
         }
     }
