@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "azzu9394/cicd-k8s-demo"
+    registry = "azzu9394/springboot-with-docker"
     registryCredential = 'docker_credentials'
     dockerImage = ''
   }
@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Compile') {
       steps {
-        git 'https://github.com/Azarazzu/cicd-k8s-demo-master.git'
+        git 'https://github.com/Azarazzu/springboot-with-docker.git'
         script{
                 def gradelHome = tool name: 'GRADLE_HOME', type: 'gradle'
                 bat "${gradleHome}/bin/gradle bootrun"
