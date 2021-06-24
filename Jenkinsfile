@@ -10,7 +10,7 @@ pipeline {
       steps {
         git 'https://github.com/Azarazzu/springboot-with-docker.git'
         script{
-                powershell './gradlew build'
+              bat 'gradlew build'
         }
       }
     }
