@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: springboot
-          image: azzu9394/jhooq-springboot-container
+          image: azzu9394/jhooq-springboot-container:latest
           ports:
             - containerPort: 8080
           env:
