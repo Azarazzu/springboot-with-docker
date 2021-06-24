@@ -20,15 +20,3 @@ spec:
           env:
             - name: PORT
               value: "8080"
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: jhooq-service
-spec:
-  type: NodePort
-  ports:
-    - port: 80
-      targetPort: 8080
-  selector:
-    app: jhooq-springboot
