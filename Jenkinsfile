@@ -1,6 +1,6 @@
 pipeline {
   environment {
-    registry = "azzu9394/cicd-k8s-demo"
+    registry = "azzu9394/jhooq-springboot-container"
     registryCredential = 'docker_credentials'
     dockerImage = ''
   }
@@ -8,7 +8,7 @@ pipeline {
   stages {
     stage('Gradle Build') {
       steps {
-        git 'https://github.com/Azarazzu/cicd-k8s-demo-master.git'
+        git 'https://github.com/Azarazzu/springboot-with-docker.git'
         script{
                 powershell './gradlew build'
         }
