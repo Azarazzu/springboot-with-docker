@@ -40,6 +40,8 @@ pipeline {
           withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: '']) {
             powershell 'kubectl apply -f k8s-spring-boot-deployment.yml'
             powershell 'kubectl apply -f service.yml'
+            powershell 'kubectl rollout restart deployment jhooq-springboot'
+            
        }
         }
     }
