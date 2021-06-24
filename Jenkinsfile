@@ -6,10 +6,10 @@ pipeline {
   }
   agent any
   stages {
-    stage('Compile','Gradle Build') {
+    stage('Compile',) {
       steps {
         git 'https://github.com/Azarazzu/springboot-with-docker.git'
-         powershell 'gradlew build'        
+         powershell './gradlew build'        
         }
       }
     }
