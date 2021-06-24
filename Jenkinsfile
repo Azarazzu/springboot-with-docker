@@ -38,7 +38,7 @@ pipeline {
     stage('Deploy to Kubernetes'){
         steps{
           withKubeConfig([credentialsId: 'mykubeconfig', serverUrl: '']) {
-            bat 'kubectl apply -f deployment.yml'
+            powershell 'kubectl apply -f k8s-spring-boot-deployment.yml'
        }
         }
     }
